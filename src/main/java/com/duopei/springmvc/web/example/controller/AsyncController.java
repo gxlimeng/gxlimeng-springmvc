@@ -17,6 +17,7 @@ public class AsyncController {
 	
 	@RequestMapping(value="/defer")
 	public @ResponseBody DeferredResult<String> deferredCall(){
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 		 return asyncPushService.getAsyncUpdate();
 	}
 	

@@ -14,8 +14,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Spring mvc 用例</title>
-	12  ASYNC测试 <a href="${pageContext.request.contextPath}/async/defer">ASYNC测试 /async/defer"</a> <br/>
-	11  SSE测试 <a href="${pageContext.request.contextPath}/sse">SSE测试 /sse" </a> <br/>
+	12  ASYNC测试 <a href="${pageContext.request.contextPath}/async">ASYNC测试 /async/defer"</a> <br/>
+	11  SSE测试(IE不支持SSE) <a href="${pageContext.request.contextPath}/sse">SSE测试 /sse" </a> <br/>
 	10> 文件上传 
 			<div>
 				<form action="${pageContext.request.contextPath}/upload/file" enctype="multipart/form-data" method="post">

@@ -13,10 +13,8 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
-import org.springframework.web.servlet.config.annotation.AsyncSupportConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
@@ -109,8 +107,9 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	@Override
 	public void addViewControllers(ViewControllerRegistry registry) {
 		super.addViewControllers(registry);
-		registry.addViewController("/index").setViewName("/index");
-		registry.addViewController("/sse").setViewName("/sse");
+		registry.addViewController("/index").setViewName("index");
+		registry.addViewController("/sse").setViewName("sse");
+		registry.addViewController("/async").setViewName("async");
 	}
 
 	@Override
@@ -130,8 +129,9 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	}
 	
 	/**
-	 * 异步支持
+	 * 异步线程支持
 	 */
+	/*
 	  @Override
 	  public void configureAsyncSupport(AsyncSupportConfigurer configurer) {
 	       configurer.setDefaultTimeout(30*1000L); //tomcat默认10秒
@@ -146,6 +146,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	        executor.setMaxPoolSize(25);
 	        return executor;
 	    }
-
+*/
 	
 }
