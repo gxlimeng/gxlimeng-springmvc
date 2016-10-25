@@ -1,9 +1,6 @@
 package com.duopei.springmvc.config;
 
-import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.List;
-
+import com.duopei.springmvc.config.interceptor.ExampleInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -13,40 +10,69 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
-import org.springframework.web.servlet.config.annotation.AsyncSupportConfigurer;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
-import org.springframework.web.servlet.view.InternalResourceViewResolver;
-import org.springframework.web.servlet.view.JstlView;
+import org.springframework.web.servlet.config.annotation.*;
+import org.thymeleaf.spring4.SpringTemplateEngine;
+import org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver;
+import org.thymeleaf.spring4.view.ThymeleafViewResolver;
+import org.thymeleaf.templatemode.TemplateMode;
+import org.thymeleaf.templateresolver.ITemplateResolver;
 
-import com.duopei.springmvc.config.interceptor.ExampleInterceptor;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.List;
 
+@EnableWebMvc // 开启Spring mvc支持（@EnableWebMvc并会开启一些默认配置，如ViewResolver  或者MessageConverter等）
 @Configuration
 @EnableScheduling
 @ComponentScan("com.duopei.springmvc")
-@EnableWebMvc // 开启Spring mvc支持（@EnableWebMvc并会开启一些默认配置，如ViewResolver  或者MessageConverter等）
 @PropertySource(value = "classpath:config.properties", encoding = "UTF-8") //
 public class WebConfig extends WebMvcConfigurerAdapter {
 
 	/**
-	 * 配置了一个jsp的viewResolver,jsp视图解析器的bean
+	 * 1>配置了一个jsp的viewResolver,jsp视图解析器的bean
 	 * @return
 	 */
-	@Bean
+	/*@Bean
 	public InternalResourceViewResolver viewResolver() {
 		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
 		viewResolver.setPrefix("/WEB-INF/classes/views/");
 		viewResolver.setSuffix(".jsp");
 		viewResolver.setViewClass(JstlView.class);
 		return viewResolver;
+	}*/
+
+	/**
+	 *
+	 * 2>配置了一个jsp的viewResolver,jsp视图解析器的bean
+	 * @return
+	 */
+	@Bean
+	public ITemplateResolver templateViewResolver(){
+		//ServletContextTemplateResolver  SpringResourceTemplateResolver
+		SpringResourceTemplateResolver viewResolver = new SpringResourceTemplateResolver();
+		viewResolver.setPrefix("/WEB-INF/classes/templates/");
+		viewResolver.setSuffix(".html");
+		viewResolver.setCharacterEncoding("UTF-8"); //Thymeleaf页面乱码
+		viewResolver.setTemplateMode(TemplateMode.HTML);
+		return viewResolver;
 	}
+	@Bean
+	public SpringTemplateEngine templateEngine(){
+		SpringTemplateEngine templateEngine = new SpringTemplateEngine();
+		templateEngine.setTemplateResolver(templateViewResolver());
+		//templateEngine.addDialect(new LayoutDialect());
+		return templateEngine;
+	}
+	@Bean
+	public ThymeleafViewResolver thymeleafViewResolver(){
+		ThymeleafViewResolver thymeleafViewResolver = new ThymeleafViewResolver();
+		thymeleafViewResolver.setTemplateEngine(templateEngine());
+		thymeleafViewResolver.setCharacterEncoding("UTF-8"); //Thymeleaf页面乱码
+		return thymeleafViewResolver;
+	}
+
 
 	/*
 	 * 避免IE执行AJAX时,返回JSON出现下载文件
@@ -80,7 +106,8 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		super.addResourceHandlers(registry);
-		registry.addResourceHandler("/assets/**").addResourceLocations("classpath:/assets/");
+		registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/");
+		registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/","classpath:/webjars/");
 	}
 
 	@Override
@@ -109,8 +136,8 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	@Override
 	public void addViewControllers(ViewControllerRegistry registry) {
 		super.addViewControllers(registry);
-		registry.addViewController("/index").setViewName("/index");
-		registry.addViewController("/sse").setViewName("/sse");
+		registry.addViewController("/sse").setViewName("sse");
+		registry.addViewController("/async").setViewName("async");
 	}
 
 	@Override
@@ -128,10 +155,11 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 		multipartResolver.setMaxUploadSize(1000000);
 		return multipartResolver;
 	}
-	
+
 	/**
-	 * 异步支持
+	 * 异步线程支持
 	 */
+	/*
 	  @Override
 	  public void configureAsyncSupport(AsyncSupportConfigurer configurer) {
 	       configurer.setDefaultTimeout(30*1000L); //tomcat默认10秒
@@ -146,6 +174,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	        executor.setMaxPoolSize(25);
 	        return executor;
 	    }
-
+*/
 	
 }
