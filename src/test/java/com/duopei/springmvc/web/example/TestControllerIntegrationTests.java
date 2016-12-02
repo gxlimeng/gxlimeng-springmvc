@@ -1,7 +1,11 @@
 package com.duopei.springmvc.web.example;
 
 import com.duopei.springmvc.config.WebConfig;
+import com.duopei.springmvc.model.menu.Menu;
+import com.duopei.springmvc.model.user.User;
+import com.duopei.springmvc.web.admin.service.MenuService;
 import com.duopei.springmvc.web.admin.service.TestItemService;
+import com.duopei.springmvc.web.admin.service.UserService;
 import com.duopei.springmvc.web.example.service.DemoService;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,6 +21,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+
+import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes=WebConfig.class)
@@ -43,6 +49,12 @@ public class TestControllerIntegrationTests {
 
 	@Autowired
 	TestItemService testItemService;
+
+	@Autowired
+	UserService userService;
+
+	@Autowired
+	MenuService menuService;
 	
 	@Before // 测试开始之前的初始化工作
 	public void setup(){
@@ -59,6 +71,23 @@ public class TestControllerIntegrationTests {
 	public void TestTransaction() throws Exception{
 		//mockMvc.perform(MockMvcRequestBuilders.post("/trans/order")) ;
 		testItemService.order("1001","100001",1);
+	}
+
+	@Test
+	public void TestMethod() throws Exception{
+		User user = new User();
+		List<Menu> list = menuService.selectMenu(user);
+		System.out.println("size="+list.size());
+		for (Menu menu : list) {
+			System.out.println(menu.getMenuName());
+			if(null != menu.getDmenus()) {
+				for (Menu menu1 : menu.getDmenus()) {
+					System.out.println("======\t==" + menu1.getMenuName());
+				}
+			}
+		}
+		System.out.println(">>>>>>>>>>>>");
+
 	}
 
 	@Test

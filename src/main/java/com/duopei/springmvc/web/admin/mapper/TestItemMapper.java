@@ -1,6 +1,5 @@
 package com.duopei.springmvc.web.admin.mapper;
 
-import com.duopei.springmvc.model.User;
 import com.duopei.springmvc.model.testtransction.Item;
 import org.apache.ibatis.annotations.Select;
 

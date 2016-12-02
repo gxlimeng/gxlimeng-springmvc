@@ -1,9 +1,8 @@
 package com.duopei.springmvc.web.admin.service;
 
-import com.duopei.springmvc.model.User;
+import com.duopei.springmvc.model.user.User;
 import com.duopei.springmvc.web.admin.mapper.UserMapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,11 +20,8 @@ public class UserService {
     @Autowired
     public UserMapper userMapper;
 
-    public User selectByPrimaryKey(Integer id) throws JsonProcessingException {
-        User user = userMapper.selectByPrimaryKey(id);
-        ObjectMapper mapper= new ObjectMapper();
-        logger.info(">>>>>>>>user>>>>>"+ mapper.writeValueAsString(user));
-        return user;
+    public User selectUserByLogin(User user) throws JsonProcessingException {
+        return userMapper.selectUserByLogin(user);
     }
 
 }
