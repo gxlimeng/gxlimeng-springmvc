@@ -107,7 +107,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         super.addResourceHandlers(registry);
         registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/");
-        registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/","classpath:/webjars/");
     }
 
     @Override
@@ -137,6 +136,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     public void addViewControllers(ViewControllerRegistry registry) {
         super.addViewControllers(registry);
         registry.addViewController("/sse").setViewName("sse");
+        registry.addViewController("/error").setViewName("error");
         registry.addViewController("/async").setViewName("async");
     }
 

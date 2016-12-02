@@ -21,23 +21,23 @@
         </javaTypeResolver>
 
         <!-- !!!! Model Configurations !!!! -->
-        <javaModelGenerator targetPackage="com.duopei.springmvc.model" targetProject="src/main/java">
+        <javaModelGenerator targetPackage="com.duopei.springmvc.model.testtransction" targetProject="src/main/java">
             <property name="enableSubPackages" value="true"/>
             <property name="trimStrings" value="true"/>
         </javaModelGenerator>
 
-        <!-- !!!! Mapper XML Configurations !!!! -->
+<!--        &lt;!&ndash; !!!! Mapper XML Configurations !!!! &ndash;&gt;
         <sqlMapGenerator targetPackage="com.duopei.springmvc.web.admin.mapper" targetProject="src/main/java">
             <property name="enableSubPackages" value="true"/>
         </sqlMapGenerator>
 
-        <!-- !!!! Mapper Interface Configurations !!!! -->
+        &lt;!&ndash; !!!! Mapper Interface Configurations !!!! &ndash;&gt;
         <javaClientGenerator targetPackage="com.duopei.springmvc.web.admin.mapper" targetProject="src/main/java" type="XMLMAPPER">
             <property name="enableSubPackages" value="true"/>
-        </javaClientGenerator>
+        </javaClientGenerator>-->
 
         <!-- !!!! Table Configurations !!!! -->
-        <table tableName="sys_user" enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
-               enableUpdateByExample="false" domainObjectName="User"/>
+        <table tableName="taccount" enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
+               enableUpdateByExample="false" domainObjectName="Account"/>
     </context>
 </generatorConfiguration>

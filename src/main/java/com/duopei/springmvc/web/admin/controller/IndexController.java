@@ -21,21 +21,22 @@ public class IndexController {
         return "login";
     }
 
-    @RequestMapping("/")
+    @RequestMapping(value = "/")
     public String admin(Model model){
-        /*long size= collectRepository.countByUserIdAndIsDelete(getUserId(),IsDelete.NO);
-        Config config = configRepository.findByUserId(getUserId());
-        Favorites favorites = favoritesRepository.findOne(Long.parseLong(config.getDefaultFavorties()));
-        List<String> followList = followRepository.findByUserId(getUserId());
-        model.addAttribute("config",config);
-        model.addAttribute("favorites",favorites);
-        model.addAttribute("size",size);
-        model.addAttribute("followList",followList);
-        model.addAttribute("user",getUser());
-        model.addAttribute("newAtMeCount",noticeRepository.countByUserIdAndTypeAndReaded(getUserId(), "at", "unread"));
-        model.addAttribute("newCommentMeCount",noticeRepository.countByUserIdAndTypeAndReaded(getUserId(), "comment", "unread"));
-        model.addAttribute("newPraiseMeCount",noticeRepository.countPraiseByUserIdAndReaded(getUserId(), "unread"));
-        logger.info("collect size="+size+" userID="+getUserId());*/
-        return "home";
+        System.out.println("aaaaaaaaaaaaa");
+//        long size= collectRepository.countByUserIdAndIsDelete(getUserId(),IsDelete.NO);
+//        Config config = configRepository.findByUserId(getUserId());
+//        Favorites favorites = favoritesRepository.findOne(Long.parseLong(config.getDefaultFavorties()));
+//        List<String> followList = followRepository.findByUserId(getUserId());
+//        model.addAttribute("config",config);
+//        model.addAttribute("favorites",favorites);
+//        model.addAttribute("size",size);
+//        model.addAttribute("followList",followList);
+//        model.addAttribute("user",getUser());
+//        model.addAttribute("newAtMeCount",noticeRepository.countByUserIdAndTypeAndReaded(getUserId(), "at", "unread"));
+//        model.addAttribute("newCommentMeCount",noticeRepository.countByUserIdAndTypeAndReaded(getUserId(), "comment", "unread"));
+//        model.addAttribute("newPraiseMeCount",noticeRepository.countPraiseByUserIdAndReaded(getUserId(), "unread"));
+//        logger.info("collect size="+size+" userID="+getUserId());
+        return "index";
     }
 }

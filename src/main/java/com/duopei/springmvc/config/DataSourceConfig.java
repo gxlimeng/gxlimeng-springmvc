@@ -1,6 +1,8 @@
 package com.duopei.springmvc.config;
 
 import com.alibaba.druid.pool.DruidDataSource;
+import com.github.pagehelper.PageHelper;
+import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
@@ -10,11 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
-import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
-import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import java.sql.SQLException;
+import java.util.Properties;
 
 /**
  * Created by Administrator on 2016/11/24.
@@ -22,6 +24,12 @@ import java.sql.SQLException;
  */
 @MapperScan("com.duopei.springmvc")
 @Configuration
+/**
+ * 启用注解事务管理，使用CGLib代理
+ * 基于注解的事务，当注解中发现@Transactional时，使用id为“transactionManager”的事务管理器
+ * 如果没有设置transaction-manager的值，则spring以缺省默认的事务管理器来处理事务，默认事务管理器为第一个加载的事务管理器
+ */
+@EnableTransactionManagement(proxyTargetClass = true)
 public class DataSourceConfig {
 
     private static final Logger logger = LoggerFactory.getLogger(DataSourceConfig.class);
@@ -76,13 +84,24 @@ public class DataSourceConfig {
         return new DataSourceTransactionManager(dataSource());
     }
 
+
+
     @Bean
     public SqlSessionFactory sqlSessionFactory() throws Exception {
         SqlSessionFactoryBean sessionFactory = new SqlSessionFactoryBean();
-        ResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver();
         sessionFactory.setDataSource(dataSource());
-        //sessionFactory.setMapperLocations(new Resource[]{resourcePatternResolver.getResource("classpath:com/duopei/springmvc/**/*Mapper.xml")});
+
+        sessionFactory.setPlugins(new Interceptor[]{pageHelper()});// 添加分页插件pageHelper
+
         return sessionFactory.getObject();
     }
 
+    @Bean
+    public PageHelper pageHelper(){
+        PageHelper pageHelper = new PageHelper();
+        Properties properties = new Properties();
+        properties.setProperty("dialect","mysql");
+        pageHelper.setProperties(properties);
+        return pageHelper;
+    }
 }

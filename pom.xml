@@ -181,6 +181,14 @@
             <artifactId>mysql-connector-java</artifactId>
             <version>5.1.38</version>
         </dependency>
+        <!-- 分页插件 -->
+        <!-- https://mvnrepository.com/artifact/com.github.pagehelper/pagehelper -->
+        <dependency>
+            <groupId>com.github.pagehelper</groupId>
+            <artifactId>pagehelper</artifactId>
+            <version>4.1.6</version>
+        </dependency>
+
         <!-- 文件上传 -->
         <dependency>
             <groupId>commons-fileupload</groupId>
@@ -230,5 +238,4 @@
             </plugin>
         </plugins>
     </build>
-			<scope>test</scope>
 </project>

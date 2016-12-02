@@ -1,5 +1,8 @@
 package com.duopei.springmvc.web.example;
 
+import com.duopei.springmvc.config.WebConfig;
+import com.duopei.springmvc.web.admin.service.TestItemService;
+import com.duopei.springmvc.web.example.service.DemoService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,9 +17,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-
-import com.duopei.springmvc.config.WebConfig;
-import com.duopei.springmvc.web.example.service.DemoService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes=WebConfig.class)
@@ -39,6 +39,10 @@ public class TestControllerIntegrationTests {
 	@SuppressWarnings("unused")
 	@Autowired
 	private MockHttpServletRequest request;
+
+
+	@Autowired
+	TestItemService testItemService;
 	
 	@Before // 测试开始之前的初始化工作
 	public void setup(){
@@ -47,9 +51,19 @@ public class TestControllerIntegrationTests {
 
 	@Test
 	public void TestMybatisController() throws Exception{
-		mockMvc.perform(MockMvcRequestBuilders.post("/user/xxx"))
+		mockMvc.perform(MockMvcRequestBuilders.post("/user/xxx"));
+	}
 
-				;
+
+	@Test
+	public void TestTransaction() throws Exception{
+		//mockMvc.perform(MockMvcRequestBuilders.post("/trans/order")) ;
+		testItemService.order("1001","100001",1);
+	}
+
+	@Test
+	public void TestPage(){
+		testItemService.selectAllItemByPage();
 	}
 
 

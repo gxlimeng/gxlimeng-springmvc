@@ -1,5 +1,6 @@
 package com.duopei.springmvc.web.admin.controller;
 
+import com.duopei.springmvc.comm.Const;
 import com.duopei.springmvc.domain.result.ExceptionMsg;
 import com.duopei.springmvc.domain.result.ResponseData;
 import com.duopei.springmvc.model.User;
@@ -22,23 +23,20 @@ public class UserController {
     private UserService userService;
 
     @RequestMapping(value = "/xxx", method = RequestMethod.POST)
-    public ResponseData login1(User user, HttpSession session) {
+    public ResponseData login1(User user, HttpSession session) throws Exception {
         User loginUser = userService.selectByPrimaryKey(10000);
         return new ResponseData(ExceptionMsg.SUCCESS, "layout");
 
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ResponseData login(User user, HttpSession session) {
+    public ResponseData login(User user, HttpSession session) throws Exception {
         User loginUser = userService.selectByPrimaryKey(10000);
-
-
-
         /*if (null == user) {
             return new ResponseData(ExceptionMsg.LoginNameNotExists);
         } else if (!loginUser.getUserPwd().equals(user.getUserPwd())) {
             return new ResponseData(ExceptionMsg.LoginNameOrPassWordError);
-        }
+        }*/
         session.setAttribute(Const.LOGIN_SESSION_KEY, loginUser);
         String preUrl = "/";
         if(null != session.getAttribute(Const.LAST_REFERER)){
@@ -46,7 +44,7 @@ public class UserController {
             if(preUrl.indexOf("/collect?") < 0){
                 preUrl = "/";
             }
-        }*/
-        return new ResponseData(ExceptionMsg.SUCCESS, "layout");
+        }
+        return new ResponseData(ExceptionMsg.SUCCESS, preUrl);
     }
 }
