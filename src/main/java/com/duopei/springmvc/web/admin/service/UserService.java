@@ -8,6 +8,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 /**
  * Created by Administrator on 2016/11/23.
@@ -24,4 +26,7 @@ public class UserService {
         return userMapper.selectUserByLogin(user);
     }
 
+    public List<User> selectAllUsers() {
+        return userMapper.selectAllUsers();
+    }
 }

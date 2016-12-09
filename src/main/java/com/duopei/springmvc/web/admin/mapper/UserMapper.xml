@@ -32,4 +32,24 @@
       </if>
   </select>
 
+    <select id="selectAllUsers" resultType="com.duopei.springmvc.model.user.User" >
+        SELECT usr.USER_ID       AS userId,
+        usr.USER_CODE            AS userCode,
+        usr.USER_TEL             AS userTel,
+        usr.USER_EMAIL           AS userEmail,
+        usr.USER_PWD             AS userPwd,
+        usr.USER_NAME            AS userName,
+        usr.USER_STATUS          AS userStatus,
+        usr.COMMONS              AS commons,
+        usr.LAST_LOGIN_TIME      AS lastLoginTime,
+        usr.LAST_UPDATE_PWD_DATE AS lastUpdatePwdDate,
+        usr.INSERT_ID            AS insertId,
+        usr.INSERT_DATE          AS insertDate,
+        usr.MODIFY_ID            AS modifyId,
+        usr.MODIFY_DATE          AS modifyDate,
+        usr.LAST_VERSION         AS lastVersion
+        FROM   tusers usr
+        WHERE  1 = 1
+    </select>
+
 </mapper>

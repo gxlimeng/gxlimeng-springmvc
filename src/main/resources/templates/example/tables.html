@@ -1,4 +1,4 @@
-﻿﻿<!DOCTYPE HTML>
+﻿<!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="utf-8">
@@ -67,35 +67,50 @@
 </div>
 
 <!-- 查询结果及功能区域 -->
-<div class="panel-body pd" id="resultArea">
-	<div class="cl pd-5 bg-1 bk-gray mt-20">
-		<span class="l">
-			<a href="javascript:;" id="query" class="btn btn-default radius"><i class="Hui-iconfont">&#xe665;</i> 查询</a>
-			<a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>
-			<a href="javascript:;" onclick="admin_add('添加管理员','admin-add.html','800','500')" class="btn btn-primary radius"> <i class="Hui-iconfont">&#xe600;</i> 添加管理员</a>
-		</span>
-		<span class="r">共有数据：<strong>54</strong> 条</span>
+<div class="panel panel-default" style="border:none">
+	<div class="panel-header">
+		<span><i class="Hui-iconfont">&#xe6bf;</i>功能区</span>
+		<a href="javascript:;" id="queryData" onclick="query();" class="btn btn-default radius"><i class="Hui-iconfont">&#xe665;</i> 查询</a>
+		<a href="javascript:;" id="del" onclick="del()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>
+		<a href="javascript:;" id="add" onclick="add('添加管理员','admin-add.html','800','500')" class="btn btn-primary radius"> <i class="Hui-iconfont">&#xe600;</i> 添加管理员</a>
 	</div>
-	<table id="table_id" class="table table-border table-bordered table-bg">
+<div class="panel-body pd" id="resultArea" >
+	<table id="table_id" class="table table-border table-bordered table-bg size-S">
 		<thead>
 		<tr>
-			<th>userCode</th>
-			<th>userName</th>
-			<th>userId</th>
+			<th>expId</th>
+			<th>expName</th>
+			<th>expSex</th>
+			<th>expDate</th>
+			<th>expYn</th>
+			<th>insertId</th>
+			<th>insertDate</th>
+			<th>modifyId</th>
+			<th>modifyDate</th>
+			<th>lastVersion</th>
 		</tr>
 		</thead>
-		<tbody>
-		<tr>
-			<td>Row 1 Data 1</td>
-			<td>Row 1 Data 2</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>Row 2 Data 1</td>
-			<td>Row 2 Data 2</td>
-		</tr>
-		</tbody>
 	</table>
+</div>
+<br/>
+<div class="panel-body pd" id="resultServerArea" >
+	<table id="table_id_s" class="table table-border table-bordered table-bg size-S">
+		<thead>
+		<tr>
+			<th>expId</th>
+			<th>expName</th>
+			<th>expSex</th>
+			<th>expDate</th>
+			<th>expYn</th>
+			<th>insertId</th>
+			<th>insertDate</th>
+			<th>modifyId</th>
+			<th>modifyDate</th>
+			<th>lastVersion</th>
+		</tr>
+		</thead>
+	</table>
+</div>
 </div>
 
 
@@ -106,8 +121,8 @@
 <script type="text/javascript" th:src="@{/static/lib/My97DatePicker/WdatePicker.js}"></script>
 <script type="text/javascript" th:src="@{/static/js/H-ui.js}"></script>
 <script type="text/javascript" th:src="@{/static/js/H-ui.admin.js}"></script>
-<script type="text/javascript">
 
+<script type="text/javascript">
 /*隐藏显示查询区域*/
 jQuery.foldConditionArea = function(obj,obj_c,speed,obj_type,Event){
 	$(obj).bind(Event,function(){
@@ -123,23 +138,65 @@ jQuery.foldConditionArea = function(obj,obj_c,speed,obj_type,Event){
 			$(this).find("b").html("-");
 		}
 	});
-}
+};
 
 $(function(){
 	$.foldConditionArea("#breadcrumbArea","#conditionArea","fast",1,"click"); /*5个参数顺序不可打乱，分别是：相应区,隐藏显示的内容,速度,类型,事件*/
 });
 
+var stable ;
 $(function(){
-	var table = $('#table_id').DataTable({
+	/*client方式*/
+	var ctable = $('#table_id').DataTable({
 		processing :true,
-		ajax: '/user/query',
+		ajax: '/example/query',
 		columns:[
-			{"data":"userId"},
-			{"data":"userCode"},
-			{"data":"userName"}
+			{"data":"expId"},
+			{"data":"expName"},
+			{"data":"expSex"},
+			{"data":"expDate"},
+			{"data":"expYn"},
+			{"data":"insertId"},
+			{"data":"insertDate"},
+			{"data":"modifyId"},
+			{"data":"modifyDate"},
+			{"data":"lastVersion"},
 		]
 	});
+	/*Server方式*/
+	stable = $('#table_id_s').DataTable({
+		processing :true,
+		serverSide:true,
+		columns:[
+			{"data":"expId"},
+			{"data":"expName"},
+			{"data":"expSex"},
+			{"data":"expDate"},
+			{"data":"expYn"},
+			{"data":"insertId"},
+			{"data":"insertDate"},
+			{"data":"modifyId"},
+			{"data":"modifyDate"},
+			{"data":"lastVersion"},
+		],
+		 ajax:{
+			 url:"/example/queryS",
+			 dataSrc:"data",
+			 dataType:"json",
+			 type: 'POST',
+			 data: function ( d ) {
+				 return JSON.stringify( d );
+			 }
+		 },
+	});
 });
+
+
+function query(){
+	stable.ajax.reload();
+}
+
+
 </script>
 </body>
 </html>
