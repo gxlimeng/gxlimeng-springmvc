@@ -19,4 +19,12 @@ public class TablesService {
     public List<Example> selectAllExamples(Example example){
         return exampleMapper.selectAllExamples(example);
     }
+
+    public List<Example> selectAllExamplesSPage(Example example){
+        return exampleMapper.selectAllExamplesSPage(example);
+    }
+
+    public Integer selectAllExamplesSPageCount(Example example){
+        return exampleMapper.selectAllExamplesSPageCount(example);
+    }
 }

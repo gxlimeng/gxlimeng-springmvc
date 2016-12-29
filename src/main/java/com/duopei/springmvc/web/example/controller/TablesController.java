@@ -1,17 +1,19 @@
 package com.duopei.springmvc.web.example.controller;
 
 
-import com.duopei.springmvc.model.DataTablePageUtil;
+import com.duopei.springmvc.model.ResponsePageUtil;
 import com.duopei.springmvc.model.example.Example;
 import com.duopei.springmvc.web.example.service.TablesService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -32,8 +34,8 @@ public class TablesController {
 
     @ResponseBody
     @RequestMapping("/query")
-    public DataTablePageUtil queryForClient(){
-        DataTablePageUtil t = new DataTablePageUtil();
+    public ResponsePageUtil queryForClient(){
+        ResponsePageUtil t = new ResponsePageUtil();
         List<Example> examples = tablesService.selectAllExamples(new Example());
         t.setData(examples);
         return t;
@@ -41,14 +43,13 @@ public class TablesController {
 
     @ResponseBody
     @RequestMapping(value = "/queryS",method = RequestMethod.POST)
-    public DataTablePageUtil queryForServer(String jsonParam){
-        logger.info("param>>>>>>>>:" + jsonParam);
-        DataTablePageUtil t = new DataTablePageUtil();
-        List<Example> examples = tablesService.selectAllExamples(new Example());
-        t.setDraw(1);
-        //t.setsEcho(1);
-        t.setRecordsFiltered(examples.size());
-        t.setRecordsTotal(examples.size());
+    public ResponsePageUtil queryForServer(@RequestBody Example example) throws IOException {
+        logger.info("param3>>>>>>>>:" + example);
+        ResponsePageUtil t = new ResponsePageUtil();
+        List<Example> examples = tablesService.selectAllExamplesSPage(example);
+        Integer pageSize = tablesService.selectAllExamplesSPageCount(example);
+        t.setRecordsFiltered(pageSize);
+        t.setRecordsTotal(pageSize);
         t.setData(examples);
         return t;
     }

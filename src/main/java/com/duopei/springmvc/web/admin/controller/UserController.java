@@ -3,7 +3,7 @@ package com.duopei.springmvc.web.admin.controller;
 import com.duopei.springmvc.comm.Const;
 import com.duopei.springmvc.domain.result.ExceptionMsg;
 import com.duopei.springmvc.domain.result.ResponseData;
-import com.duopei.springmvc.model.DataTablePageUtil;
+import com.duopei.springmvc.model.ResponsePageUtil;
 import com.duopei.springmvc.model.user.User;
 import com.duopei.springmvc.web.admin.service.UserService;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -75,8 +75,8 @@ public class UserController {
 
     @ResponseBody
     @RequestMapping("/query")
-    public DataTablePageUtil userQuery(Model model) throws JsonProcessingException {
-        DataTablePageUtil t = new DataTablePageUtil();
+    public ResponsePageUtil userQuery(Model model) throws JsonProcessingException {
+        ResponsePageUtil t = new ResponsePageUtil();
         t.setDraw(3);
         t.setRecordsTotal(57);
         t.setRecordsFiltered(57);

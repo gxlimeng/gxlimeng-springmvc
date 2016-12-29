@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Created by Administrator on 2016/12/13.
  */
-public class DataTablePageUtil<T> {
+public class ResponsePageUtil<T> {
     private Integer draw;
 
     public Integer getsEcho() {

@@ -183,8 +183,13 @@ $(function(){
 			 url:"/example/queryS",
 			 dataSrc:"data",
 			 dataType:"json",
+			 contentType:"application/json",
 			 type: 'POST',
 			 data: function ( d ) {
+				 debugger;
+				 //添加额外的参数传给服务器
+				 d.expId = 1;
+				 d.expName="aaa";
 				 return JSON.stringify( d );
 			 }
 		 },
@@ -195,7 +200,6 @@ $(function(){
 function query(){
 	stable.ajax.reload();
 }
-
 
 </script>
 </body>
