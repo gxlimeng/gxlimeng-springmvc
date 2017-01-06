@@ -33,6 +33,11 @@ public enum ExceptionMsg {
         this.msg = msg;
     }
 
+    ExceptionMsg(String msg) {
+        this.code = "999999";
+        this.msg = msg;
+    }
+
     private String code;
     private String msg;
 

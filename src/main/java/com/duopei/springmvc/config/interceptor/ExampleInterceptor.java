@@ -1,10 +1,12 @@
 package com.duopei.springmvc.config.interceptor;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  *  拦截器（interceptor）实现对每个请求处理前后进行相关业务操作处理，类似于Servlet的Filter
@@ -18,6 +20,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
  */
 public class ExampleInterceptor extends HandlerInterceptorAdapter {
 
+	private static final Logger logger = LoggerFactory.getLogger(ExampleInterceptor.class);
 	/**
 	 * 请求发生前执行
 	 */
@@ -38,7 +41,7 @@ public class ExampleInterceptor extends HandlerInterceptorAdapter {
 			ModelAndView modelAndView) throws Exception {
 		super.postHandle(request, response, handler, modelAndView);
 		Long startTime = (Long) request.getAttribute("startTime");
-		System.out.println("本次请求处理时间为1：" + ( System.currentTimeMillis() - startTime ) +" ms");
+		logger.info(" REQUEST--->[ " + ( System.currentTimeMillis() - startTime ) +" ]ms");
 		request.removeAttribute("startTime");
 	}
 	

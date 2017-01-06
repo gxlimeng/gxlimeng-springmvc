@@ -80,6 +80,9 @@ public class TestItemService {
 
     }
 
+    /**
+     * pageHelper分页插件
+     */
     public void selectAllItemByPage(){
         PageHelper.startPage(1,10);
         List<Item> itemList = testItemMapper.selectAllItemByPage();

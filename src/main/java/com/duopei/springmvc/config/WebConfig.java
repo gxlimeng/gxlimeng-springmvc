@@ -93,6 +93,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         StringHttpMessageConverter stringHttpMessageConverter = new StringHttpMessageConverter(
                 Charset.forName("UTF-8"));
         List<MediaType> mediaTypeList = new ArrayList<MediaType>();
+        mediaTypeList.add(MediaType.APPLICATION_JSON_UTF8);
         mediaTypeList.add(MediaType.valueOf(MediaType.TEXT_PLAIN_VALUE + ";charset=UTF-8"));
         mediaTypeList.add(MediaType.valueOf(MediaType.TEXT_HTML_VALUE + ";charset=UTF-8"));
         stringHttpMessageConverter.setSupportedMediaTypes(mediaTypeList);
@@ -113,6 +114,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     public void extendMessageConverters(List<HttpMessageConverter<?>> messageConverters) {
         super.extendMessageConverters(messageConverters);
         messageConverters.add(jacksonMessageConverter());
+        messageConverters.add(stringHttpMessageConverter());
     }
 
     /**

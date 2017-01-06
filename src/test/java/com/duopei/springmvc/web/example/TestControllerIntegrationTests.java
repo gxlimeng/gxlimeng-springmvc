@@ -7,6 +7,7 @@ import com.duopei.springmvc.web.admin.service.MenuService;
 import com.duopei.springmvc.web.admin.service.TestItemService;
 import com.duopei.springmvc.web.admin.service.UserService;
 import com.duopei.springmvc.web.example.service.DemoService;
+import com.duopei.springmvc.web.example.service.ExampleService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -54,6 +55,9 @@ public class TestControllerIntegrationTests {
 	UserService userService;
 
 	@Autowired
+	ExampleService exampleService;
+
+	@Autowired
 	MenuService menuService;
 	
 	@Before // 测试开始之前的初始化工作
@@ -71,6 +75,12 @@ public class TestControllerIntegrationTests {
 	public void TestTransaction() throws Exception{
 		//mockMvc.perform(MockMvcRequestBuilders.post("/trans/order")) ;
 		testItemService.order("1001","100001",1);
+	}
+
+	@Test
+	public void TestTransaction1() throws Exception{
+		//mockMvc.perform(MockMvcRequestBuilders.post("/trans/order")) ;
+		exampleService.deleteExampleById("35");
 	}
 
 	@Test
