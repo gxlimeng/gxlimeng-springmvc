@@ -10,9 +10,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -43,7 +43,7 @@ public class ExampleController {
 
     @ResponseBody
     @RequestMapping(value = "/queryS",method = RequestMethod.POST)
-    public ResponsePageUtil queryForServer(@RequestBody Example example) throws IOException {
+    public ResponsePageUtil queryForServer(@RequestBody Example example) throws Exception {
         logger.info("param3>>>>>>>>:" + example);
         ResponsePageUtil t = new ResponsePageUtil();
         Integer pageSize = exampleService.selectAllExamplesSPageCount(example);
@@ -65,10 +65,28 @@ public class ExampleController {
         return new ResponseData(ExceptionMsg.SUCCESS);
     }
 
+    @RequestMapping("/add")
+    public String add(Model model){
+        Example example = new Example();
+        example.setExpName("测试");
+        example.setExpSex("1");
+        model.addAttribute("example",example);
+
+        return "example/example-add";
+    }
+
+
+    @ResponseBody
+    @RequestMapping("/new")
+    public String storeExample(Model model,Example example){
+        System.out.println("new example " + example.toString());
+        return null;
+    }
+
     public ResponsePageUtil<Example> getResponsePageData(){
         ResponsePageUtil t = new ResponsePageUtil();
-        //t.setDraw();
         return t;
     }
+
 
 }

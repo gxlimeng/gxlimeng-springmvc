@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.duopei.springmvc.web.base.mapper.ErrorLogMapper" >
+
+    <insert id="insertErrorLogService" parameterType="com.duopei.springmvc.model.base.ErrorLog"
+        useGeneratedKeys="true" keyProperty="errId">
+        INSERT INTO TERRORLOG(ERR_NAME,ERR_TYPE,ERR_CLASS,ERR_EXCEPTION,ERR_MSG,ERR_DATE)
+        VALUES(#{errName},#{errType},#{errorClass},#{errException},#{errMsg},NOW())
+    </insert>
+
+</mapper>

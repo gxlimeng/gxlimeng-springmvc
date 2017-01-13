@@ -41,7 +41,7 @@ public class ExampleInterceptor extends HandlerInterceptorAdapter {
 			ModelAndView modelAndView) throws Exception {
 		super.postHandle(request, response, handler, modelAndView);
 		Long startTime = (Long) request.getAttribute("startTime");
-		logger.info(" REQUEST--->[ " + ( System.currentTimeMillis() - startTime ) +" ]ms");
+		logger.info(" 此次请求处理时间为 [ " + ( System.currentTimeMillis() - startTime ) +" ] ms");
 		request.removeAttribute("startTime");
 	}
 	

@@ -1,5 +1,6 @@
 package com.duopei.springmvc.web.example.service;
 
+import com.duopei.springmvc.config.advice.MyThrowException;
 import com.duopei.springmvc.model.example.Example;
 import com.duopei.springmvc.web.example.mapper.ExampleMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,11 +31,11 @@ public class ExampleService {
     }
 
     @Transactional
-    public Integer deleteExampleById(String expId) throws  Exception{
+    public Integer deleteExampleById(String expId) throws Exception{
         Integer delCount = exampleMapper.deleteExampleById(expId);
         if(delCount >= 1){
             //TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            throw new RuntimeException("删除数据出错,返回多条数据");
+            throw new MyThrowException("删除数据出错,返回多条数据");
         }
         return delCount;
     }
