@@ -33,10 +33,14 @@ public class ExampleService {
     @Transactional
     public Integer deleteExampleById(String expId) throws Exception{
         Integer delCount = exampleMapper.deleteExampleById(expId);
-        if(delCount >= 1){
+        if(delCount != 1){
             //TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             throw new MyThrowException("删除数据出错,返回多条数据");
         }
         return delCount;
+    }
+
+    public void insertExample(Example example) {
+        exampleMapper.insertExample(example);
     }
 }

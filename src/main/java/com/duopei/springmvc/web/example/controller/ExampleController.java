@@ -5,6 +5,7 @@ import com.duopei.springmvc.domain.result.ExceptionMsg;
 import com.duopei.springmvc.domain.result.ResponseData;
 import com.duopei.springmvc.model.ResponsePageUtil;
 import com.duopei.springmvc.model.example.Example;
+import com.duopei.springmvc.web.base.service.CodeService;
 import com.duopei.springmvc.web.example.service.ExampleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +14,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,6 +30,11 @@ public class ExampleController {
 
     @Autowired
     public ExampleService exampleService;
+
+    @Autowired
+    public CodeService codeService;
+
+
 
     @RequestMapping(value = "datatables",method = RequestMethod.GET)
     public String dataTable(){
@@ -44,7 +53,6 @@ public class ExampleController {
     @ResponseBody
     @RequestMapping(value = "/queryS",method = RequestMethod.POST)
     public ResponsePageUtil queryForServer(@RequestBody Example example) throws Exception {
-        logger.info("param3>>>>>>>>:" + example);
         ResponsePageUtil t = new ResponsePageUtil();
         Integer pageSize = exampleService.selectAllExamplesSPageCount(example);
         if(pageSize > 0 ) {
@@ -65,21 +73,26 @@ public class ExampleController {
         return new ResponseData(ExceptionMsg.SUCCESS);
     }
 
-    @RequestMapping("/add")
+    @RequestMapping(value = "/add", produces = "text/html;charset=UTF-8")
     public String add(Model model){
         Example example = new Example();
         example.setExpName("测试");
-        example.setExpSex("1");
+        example.setExpSex("2");
+        List<String> intes = new ArrayList<String>();
+        intes.add("1");
+        intes.add("2");
+        example.setInterests(intes);
+        example.setExpDate(new Date(System.currentTimeMillis()));
         model.addAttribute("example",example);
-
+        model.addAttribute("jobTypes", codeService.selectByCodeLgroup("A002"));
         return "example/example-add";
     }
 
-
     @ResponseBody
-    @RequestMapping("/new")
-    public String storeExample(Model model,Example example){
-        System.out.println("new example " + example.toString());
+    @RequestMapping(value = "/new", produces = "text/plain;charset=UTF-8")
+    public String storeExample(Model model, Example example, HttpServletRequest request){
+        System.out.println("new example " + example.toString()+" === "+ request.getCharacterEncoding());
+        exampleService.insertExample(example);
         return null;
     }
 
