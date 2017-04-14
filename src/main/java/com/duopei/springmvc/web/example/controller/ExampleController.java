@@ -88,18 +88,35 @@ public class ExampleController {
         return "example/example-add";
     }
 
-    @ResponseBody
-    @RequestMapping(value = "/new", produces = "text/plain;charset=UTF-8")
-    public String storeExample(Model model, Example example, HttpServletRequest request){
-        System.out.println("new example " + example.toString()+" === "+ request.getCharacterEncoding());
-        exampleService.insertExample(example);
-        return null;
+    @RequestMapping(value = "/edit", produces = "text/html;charset=UTF-8")
+    public String edit(@RequestParam String expId, Model model){
+        Example example = exampleService.selectExampleById(expId);
+        if(null == example){
+
+        }
+        List<String> intes = new ArrayList<String>();
+        intes.add("1");
+        intes.add("2");
+        example.setColStatus("MODIFY");
+        example.setInterests(intes);
+        example.setExpDate(example.getInsertDate());
+        model.addAttribute("example",example);
+        model.addAttribute("jobTypes", codeService.selectByCodeLgroup("A002"));
+        return "example/example-add";
     }
 
-    public ResponsePageUtil<Example> getResponsePageData(){
-        ResponsePageUtil t = new ResponsePageUtil();
-        return t;
+    @ResponseBody
+    @RequestMapping(value = "/new", produces = "text/plain;charset=UTF-8")
+    public ResponseData storeExample(Model model, Example example, HttpServletRequest request){
+        System.out.println("new example " + example.toString()+" === "+ request.getCharacterEncoding());
+        if(example.getColStatus().equals("NEW")) {
+            exampleService.insertExample(example);
+        }else{
+            logger.info("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"+example.toString());
+        }
+        return new ResponseData(ExceptionMsg.SUCCESS);
     }
+
 
 
 }

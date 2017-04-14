@@ -43,4 +43,8 @@ public class ExampleService {
     public void insertExample(Example example) {
         exampleMapper.insertExample(example);
     }
+
+    public Example selectExampleById(String expId) {
+        return exampleMapper.selectExampleById(expId);
+    }
 }

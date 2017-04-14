@@ -20,7 +20,7 @@
 </head>
 <body>
 <div class="pd-10">
-  <form action="/example/new" method="post"  class="form form-horizontal" id="form-member-add">
+  <form action="" method="post"  class="form form-horizontal" id="form-member-add">
 
     <!--ID 文本框 -->
     <div class="row cl">
@@ -108,11 +108,13 @@
     <div class="row cl">
       <label class="form-label col-3"><span class="c-red">*</span>日期：</label>
       <div class="formControls col-5">
-        <input type="text" onclick="WdatePicker()"  id="expDate" name="expDate" class="input-text Wdate size-S info" style="width:120px;" datatype="*" nullmsg="请选择日期！">
+        <input type="text" onclick="WdatePicker()" th:value="${example.expDate}" id="expDate" name="expDate" class="input-text Wdate size-S info" style="width:120px;" datatype="*" nullmsg="请选择日期！">
       </div>
       <div class="col-4"> </div>
     </div>
 
+
+    <input type="hidden"  th:value="${example.colStatus}" id="colStatus" name="colStatus" >
     <!--<div class="row cl">
       <label class="form-label col-3">附件：</label>
       <div class="formControls col-5"> <span class="btn-upload form-group">
@@ -125,7 +127,7 @@
 
     <div class="row cl">
       <div class="col-9 col-offset-3">
-        <input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+        <input class="btn btn-primary radius" id="exampleSubmit" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
       </div>
     </div>
   </form>
@@ -145,16 +147,29 @@ $(function(){
 		radioClass: 'iradio-blue',
 		increaseArea: '20%'
 	});
-	
+
 	$("#form-member-add").Validform({
 		tiptype:2,
 		callback:function(form){
-			form[0].submit();
-			var index = parent.layer.getFrameIndex(window.name);
-			parent.layer.close(index);
-
-
-          //parent.$('#queryData').click();
+          jQuery.ajax({
+            url:'/example/new',
+            data:form.serialize(),
+            type:"POST",
+            beforeSend:function(){
+              $('#exampleSubmit').hide();
+            },
+            success:function(response){
+              $('#exampleSubmit').show();
+              var index = parent.layer.getFrameIndex(window.name);
+              parent.$('#queryData').click();
+              parent.layer.close(index);
+            },
+            error:function(xhr,status,statusText){
+              debugger;
+              alert("应用程序出错,请检查数据或管理员!");
+              return;
+            }
+          });
 		}
 	});
 });

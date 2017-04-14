@@ -1,10 +1,7 @@
 package com.duopei.springmvc.config;
 
 import com.duopei.springmvc.config.interceptor.ExampleInterceptor;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.*;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
@@ -26,8 +23,9 @@ import java.util.List;
 @EnableWebMvc // 开启Spring mvc支持（@EnableWebMvc并会开启一些默认配置，如ViewResolver  或者MessageConverter等）
 @Configuration
 @EnableScheduling
+@EnableAspectJAutoProxy
 @ComponentScan("com.duopei.springmvc")
-@PropertySource(value = "classpath:config.properties", encoding = "UTF-8") //
+@PropertySource(value = {"classpath:config.properties","classpath:db.properties"}, encoding = "UTF-8") //
 public class WebConfig extends WebMvcConfigurerAdapter {
 
     /**

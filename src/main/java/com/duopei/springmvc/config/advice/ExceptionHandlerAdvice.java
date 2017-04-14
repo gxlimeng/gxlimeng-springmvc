@@ -11,6 +11,8 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
+import java.sql.SQLException;
+
 @ControllerAdvice // @ControllerAdvice声明一个控制器建言，
 public class ExceptionHandlerAdvice {
 
@@ -35,7 +37,18 @@ public class ExceptionHandlerAdvice {
     public ResponseData exception(Exception exception , WebRequest request ){
 
         /* 日志记录 */
-        this.insertErrorExceptionLog(exception);
+        this.insertErrorExceptionLog(exception,"MyThrowException");
+
+        return new ResponseData("999999",exception.getMessage());
+    }
+
+    // 直接拦截异常，并返回错误信息
+    @ResponseBody
+    @ExceptionHandler(value = SQLException.class) // @ExceptionHandler此处定义为全局变量，通过value可以过滤拦截条件，可以拦截指定的Exception
+    public ResponseData sqlException(Exception exception , WebRequest request ){
+
+        /* 日志记录 */
+        this.insertErrorExceptionLog(exception,"SQLException");
 
         return new ResponseData("999999",exception.getMessage());
     }
@@ -55,24 +68,24 @@ public class ExceptionHandlerAdvice {
      * 异常日志储存
      * @param exception
      */
-	public void insertErrorExceptionLog(Exception exception){
+	public void insertErrorExceptionLog(Exception exception,String errType){
          /* 日志记录 */
         ErrorLog err = new ErrorLog();
-        err.setErrName(exception.getMessage());
-        err.setErrException(exception.toString());
+        err.setErrName(exception.getMessage().substring(0,250));
+        err.setErrException(exception.toString().substring(0,250));
         err.setErrMsg(getExceptionInfo(exception).substring(0,5000));
         err.setErrorClass(exception.getClass().toString());
-        err.setErrType("MyThrowException");
+        err.setErrType(errType);
         try {
             errorLogService.insertErrorLogService(err); // 第一次
         }catch (Exception ex){
             try {
                 errorLogService.insertErrorLogService(err); //第二次
             }catch (Exception e){
-
+                e.printStackTrace();
             }
         }
-        logger.error("ERROR========ID=["+ err.getErrId() + "],MSG=[" + exception.toString()+"]");
+        logger.error("ERROR========ID=[["+ err.getErrId() + "]],MSG=[[" + exception.toString()+"]]========ERROR");
     }
 
     /**

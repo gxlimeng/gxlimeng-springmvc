@@ -1,6 +1,8 @@
 package com.duopei.springmvc.config;
 
 import com.alibaba.druid.pool.DruidDataSource;
+import com.duopei.springmvc.config.dynamicdatasource.DataSourceType;
+import com.duopei.springmvc.config.dynamicdatasource.DynamicDataSource;
 import com.github.pagehelper.PageHelper;
 import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -16,6 +18,8 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 /**
@@ -43,18 +47,50 @@ public class DataSourceConfig {
      * @return
      * @throws SQLException
      */
-    @Bean(destroyMethod = "close", initMethod = "init")
-    public DruidDataSource dataSource() throws SQLException {
+    @Bean(name=DataSourceType.read,destroyMethod = "close", initMethod = "init")
+    public DruidDataSource readDataSource() throws SQLException {
         DruidDataSource dataSource = new DruidDataSource();
         // 基本属性 url、user、password
-        dataSource.setUrl(environment.getProperty("db.url"));
-        dataSource.setUsername(environment.getProperty("db.username"));
-        dataSource.setPassword(environment.getProperty("db.password"));
+        dataSource.setUrl(environment.getProperty("read.db.url"));
+        dataSource.setUsername(environment.getProperty("read.db.username"));
+        dataSource.setPassword(environment.getProperty("read.db.password"));
 
         // 通常来说，只需要修改initialSize、minIdle、maxActive
-        dataSource.setInitialSize(Integer.valueOf(environment.getProperty("db.initialSize")));
-        dataSource.setMinIdle(Integer.valueOf(environment.getProperty("db.minIdle")));
-        dataSource.setMaxActive(Integer.valueOf(environment.getProperty("db.maxActive")));
+        dataSource.setInitialSize(Integer.valueOf(environment.getProperty("read.db.initialSize")));
+        dataSource.setMinIdle(Integer.valueOf(environment.getProperty("read.db.minIdle")));
+        dataSource.setMaxActive(Integer.valueOf(environment.getProperty("read.db.maxActive")));
+
+        dataSource.setMaxWait(60000); // 配置获取连接等待超时的时间
+        dataSource.setTimeBetweenEvictionRunsMillis(60000); // 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+        dataSource.setMinEvictableIdleTimeMillis(300000); // 配置一个连接在池中最小生存的时间，单位是毫秒
+
+        dataSource.setValidationQuery("SELECT 'X' ");
+        dataSource.setTestWhileIdle(true);
+        dataSource.setTestOnBorrow(false);
+        dataSource.setTestOnReturn(false);
+
+        // 打开PSCache，并且指定每个连接上PSCache的大小.如果用Oracle，则把poolPreparedStatements配置为true，mysql可以配置为false。分库分表较多的数据库，建议配置为false
+        dataSource.setPoolPreparedStatements(false);
+        dataSource.setMaxOpenPreparedStatements(20);
+
+        // 配置监控统计拦截的filters
+        //dataSource.setFilters("stat");
+        return dataSource;
+    }
+
+
+    @Bean(name=DataSourceType.write, destroyMethod = "close", initMethod = "init")
+    public DruidDataSource writeDataSource() throws SQLException {
+        DruidDataSource dataSource = new DruidDataSource();
+        // 基本属性 url、user、password
+        dataSource.setUrl(environment.getProperty("write.db.url"));
+        dataSource.setUsername(environment.getProperty("write.db.username"));
+        dataSource.setPassword(environment.getProperty("write.db.password"));
+
+        // 通常来说，只需要修改initialSize、minIdle、maxActive
+        dataSource.setInitialSize(Integer.valueOf(environment.getProperty("write.db.initialSize")));
+        dataSource.setMinIdle(Integer.valueOf(environment.getProperty("write.db.minIdle")));
+        dataSource.setMaxActive(Integer.valueOf(environment.getProperty("write.db.maxActive")));
 
         dataSource.setMaxWait(60000); // 配置获取连接等待超时的时间
         dataSource.setTimeBetweenEvictionRunsMillis(60000); // 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
@@ -75,13 +111,29 @@ public class DataSourceConfig {
     }
 
     /**
+     * 配置多数据源映射
+     */
+    @Bean
+    public DynamicDataSource multipleDataSource() throws SQLException {
+        DynamicDataSource dynamicDataSource = new DynamicDataSource();
+        Map<Object,Object> multDataSource = new HashMap<Object,Object>();
+        multDataSource.put(DataSourceType.read,readDataSource());
+        multDataSource.put(DataSourceType.write,writeDataSource());
+        dynamicDataSource.setTargetDataSources(multDataSource);
+        dynamicDataSource.setDefaultTargetDataSource(readDataSource());
+        return dynamicDataSource;
+    }
+
+
+    /**
      * 配置事务管理器
      * @return
      * @throws SQLException
      */
     @Bean
     public DataSourceTransactionManager txManager() throws SQLException {
-        return new DataSourceTransactionManager(dataSource());
+        //return new DataSourceTransactionManager(dataSource());
+        return new DataSourceTransactionManager(multipleDataSource());
     }
 
 
@@ -89,7 +141,7 @@ public class DataSourceConfig {
     @Bean
     public SqlSessionFactory sqlSessionFactory() throws Exception {
         SqlSessionFactoryBean sessionFactory = new SqlSessionFactoryBean();
-        sessionFactory.setDataSource(dataSource());
+        sessionFactory.setDataSource(multipleDataSource());
 
         sessionFactory.setPlugins(new Interceptor[]{pageHelper()});// 添加分页插件pageHelper
 
