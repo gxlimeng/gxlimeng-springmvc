@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.duopei.springmvc.web.admin.mapper.MenuMapper" >
+
+
+  <select id="selectMenuByUser" resultType="com.duopei.springmvc.model.menu.Menu" parameterType="com.duopei.springmvc.model.user.User" >
+    SELECT
+       meu.MENU_ID       AS menuId,
+       meu.MENU_PAGE_URL AS menuPageUrl,
+       meu.MENU_NAME     AS menuName,
+       meu.CTRL_CLASS    AS ctrlClass,
+       meu.CTRL_METHOD   AS ctrlMethod,
+       meu.MENU_LEVEL    AS menuLevel,
+       meu.MENU_STATUS   AS menuStatus,
+       meu.MENU_ORDERBY  AS menuOrderby
+    FROM   tuserMenu ume
+    JOIN tmenu meu ON meu.menu_id = ume.menu_id
+    WHERE ume.USER_ID = #{userId,jdbcType=INTEGER}
+  </select>
+
+    <resultMap id="queryForListMap" type="com.duopei.springmvc.model.menu.Menu">
+        <id column="menuId" property="menuId" jdbcType="INTEGER"/>
+        <result column="menuPageUrl" property="menuPageUrl" jdbcType="VARCHAR"/>
+        <result column="menuName" property="menuName" jdbcType="VARCHAR"/>
+        <result column="ctrlClass" property="ctrlClass" jdbcType="VARCHAR"/>
+        <result column="ctrlMethod" property="ctrlMethod" jdbcType="VARCHAR"/>
+        <result column="menuLevel" property="menuLevel" jdbcType="VARCHAR"/>
+        <result column="menuStatus" property="menuStatus" jdbcType="VARCHAR"/>
+        <result column="menuOrderby" property="menuOrderby" jdbcType="VARCHAR"/>
+        <result column="pMenuId" property="pMenuId" jdbcType="VARCHAR"/>
+        <collection property="dmenus" javaType="java.util.List" ofType="com.duopei.springmvc.model.menu.Menu">
+            <id column="dmenu.menuId" property="menuId" jdbcType="INTEGER"/>
+            <result column="dmenu.menuPageUrl" property="menuPageUrl" jdbcType="VARCHAR"/>
+            <result column="dmenu.menuName" property="menuName" jdbcType="VARCHAR"/>
+            <result column="dmenu.ctrlClass" property="ctrlClass" jdbcType="VARCHAR"/>
+            <result column="dmenu.ctrlMethod" property="ctrlMethod" jdbcType="VARCHAR"/>
+            <result column="dmenu.menuLevel" property="menuLevel" jdbcType="VARCHAR"/>
+            <result column="dmenu.menuStatus" property="menuStatus" jdbcType="VARCHAR"/>
+            <result column="dmenu.menuOrderby" property="menuOrderby" jdbcType="VARCHAR"/>
+            <result column="dmenu.pMenuId" property="pMenuId" jdbcType="VARCHAR"/>
+        </collection>
+    </resultMap>
+
+    <select id="selectMenu" resultMap="queryForListMap" parameterType="com.duopei.springmvc.model.user.User">
+        SELECT  pmeu.MENU_ID       AS menuId,
+                pmeu.MENU_PAGE_URL AS menuPageUrl,
+                pmeu.MENU_NAME     AS menuName,
+                pmeu.CTRL_CLASS    AS ctrlClass,
+                pmeu.CTRL_METHOD   AS ctrlMethod,
+                pmeu.MENU_LEVEL    AS menuLevel,
+                pmeu.MENU_STATUS   AS menuStatus,
+                pmeu.MENU_ORDERBY  AS menuOrderby,
+                pmeu.P_MENU_ID 	   AS pMenuId,
+                meu.MENU_ID       AS "dmenu.menuId",
+                meu.MENU_PAGE_URL AS "dmenu.menuPageUrl",
+                meu.MENU_NAME     AS "dmenu.menuName",
+                meu.CTRL_CLASS    AS "dmenu.ctrlClass",
+                meu.CTRL_METHOD   AS "dmenu.ctrlMethod",
+                meu.MENU_LEVEL    AS "dmenu.menuLevel",
+                meu.MENU_STATUS   AS "dmenu.menuStatus",
+                meu.MENU_ORDERBY  AS "dmenu.menuOrderby",
+                meu.P_MENU_ID 	  AS "dmenu.pMenuId"
+        FROM tmenu pmeu
+        left join tmenu meu on meu.p_menu_id = pmeu.menu_id
+        where pmeu.P_MENU_ID = '-1'
+        order by pmeu.menu_id,meu.menu_id
+    </select>
+
+
+</mapper>

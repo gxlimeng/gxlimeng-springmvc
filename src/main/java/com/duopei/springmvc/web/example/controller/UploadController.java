@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.duopei.springmvc.config.property.Const;
-import com.duopei.springmvc.util.TranCharset;
+import com.duopei.util.TranCharset;
 
 @Controller
 @RequestMapping(value = "/upload")

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.duopei.springmvc.web.example.mapper.ExampleMapper">
+
+    <select id="selectAllExamples" resultType="com.duopei.springmvc.model.example.Example">
+        SELECT example.EXP_ID expId,
+            example.EXP_NAME expName,
+            example.EXP_SEX expSex,
+            example.EXP_DATE expDate,
+            example.EXP_YN expYn,
+            example.INSERT_ID insertId,
+            example.INSERT_DATE insertDate,
+            example.MODIFY_ID modifyId,
+            example.MODIFY_DATE modifyDate,
+            example.LAST_VERSION lastVersion
+        FROM example
+        WHERE  1 = 1
+        LIMIT 10,15
+     </select>
+
+    <select id="selectExampleById" parameterType="java.lang.String" resultType="com.duopei.springmvc.model.example.Example">
+        SELECT example.EXP_ID expId,
+        example.EXP_NAME expName,
+        example.EXP_SEX expSex,
+        example.EXP_DATE expDate,
+        example.EXP_YN expYn,
+        example.INSERT_ID insertId,
+        example.INSERT_DATE insertDate,
+        example.MODIFY_ID modifyId,
+        example.MODIFY_DATE modifyDate,
+        example.LAST_VERSION lastVersion
+        FROM example
+        WHERE  EXP_ID = #{expId}
+    </select>
+
+    <select id="selectAllExamplesSPage" resultType="com.duopei.springmvc.model.example.Example">
+        <include refid="selectAllExamplesPage"></include>
+        LIMIT #{start},#{length}
+    </select>
+
+    <sql id="selectAllExamplesPage">
+        SELECT example.EXP_ID expId,
+        example.EXP_NAME expName,
+        example.EXP_SEX expSex,
+        example.EXP_DATE expDate,
+        example.EXP_YN expYn,
+        example.INSERT_ID insertId,
+        example.INSERT_DATE insertDate,
+        example.MODIFY_ID modifyId,
+        example.MODIFY_DATE modifyDate,
+        example.LAST_VERSION lastVersion
+        FROM example
+        WHERE  1 = 1
+    </sql>
+
+    <select id="selectAllExamplesSPageCount" resultType="java.lang.Integer">
+        SELECT COUNT(1)
+        FROM (
+          <include refid="selectAllExamplesPage"></include>
+        ) T
+    </select>
+
+    <delete id="deleteExampleById" parameterType="java.lang.String">
+        DELETE FROM example
+        WHERE EXP_ID = #{expId}
+    </delete>
+
+    <insert id="insertExample" parameterType="com.duopei.springmvc.model.example.Example">
+        INSERT INTO EXAMPLE(EXP_ID, EXP_NAME, EXP_SEX, EXP_DATE, EXP_YN, INSERT_ID, INSERT_DATE, LAST_VERSION)
+        VALUE (#{expId}, #{expName}, #{expSex}, #{expDate}, '1', '999999', NOW(), 0)
+    </insert>
+
+</mapper>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.duopei.springmvc.web.base.mapper.CodeMapper" >
+
+  <select id="selectByCodeLgroup" resultType="com.duopei.springmvc.model.base.Code" parameterType="java.lang.String" >
+
+    select
+      CODE_LGROUP AS codeLgroup,
+      CODE_MGROUP AS codeMgroup,
+      CODE_NAME   AS codeName,
+      CODE_GROUP  AS codeGroup,
+      CODE_TYPE   AS codeType,
+      CODE_SORT   AS codeSort,
+      USE_YN  AS useYn,
+      CODE_TAG    AS codeTag,
+      CODE_TAG01  AS codeTag01,
+      CODE_TAG02  AS codeTag02,
+      CODE_TAG03  AS codeTag03,
+      CODE_TAG04  AS codeTag04,
+      CODE_TAG05  AS codeTag05,
+      CODE_TAG06  AS codeTag06,
+      CODE_TAG07  AS codeTag07,
+      CODE_TAG08  AS codeTag08,
+      CODE_TAG09  AS codeTag09,
+      CODE_TAG10  AS codeTag10,
+      CODE_TAG11  AS codeTag11,
+      CODE_TAG22  AS codeTag22,
+      CODE_TAG13  AS codeTag13,
+      CODE_TAG14  AS codeTag14,
+      CODE_TAG15  AS codeTag15,
+      CODE_TAG16  AS codeTag16,
+      CODE_TAG17  AS codeTag17,
+      CODE_TAG18  AS codeTag18,
+      CODE_TAG19  AS codeTag19,
+      INSERT_ID   AS insertId,
+      INSERT_DATE AS insertDate,
+      MODIFY_ID   AS modifyId,
+      MODIFY_DATE AS modifyDate
+    from tcode
+    where CODE_LGROUP = #{codeLgroup,jdbcType=VARCHAR}
+  </select>
+
+</mapper>

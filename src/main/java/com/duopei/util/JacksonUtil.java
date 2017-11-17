@@ -1,4 +1,4 @@
-package com.duopei.springmvc.util;
+package com.duopei.util;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;

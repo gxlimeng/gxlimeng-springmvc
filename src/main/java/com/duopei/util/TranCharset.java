@@ -1,4 +1,4 @@
-package com.duopei.springmvc.util;
+package com.duopei.util;
 
 public class TranCharset {
 

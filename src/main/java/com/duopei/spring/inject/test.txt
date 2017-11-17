@@ -1,0 +1,24 @@
+13:11:52,938  INFO AnnotationConfigApplicationContext:581 - Refreshing org.springframework.context.annotation.AnnotationConfigApplicationContext@36aa7bc2: startup date [Sat Oct 15 13:11:52 CST 2016]; root of context hierarchy
+13:11:53,206  INFO PostProcessorRegistrationDelegate$BeanPostProcessorChecker:328 - Bean 'taskExecutorConfig' of type [class com.duopei.gxlimeng.spring.thread.executor.TaskExecutorConfig$$EnhancerBySpringCGLIB$$9966877] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+13:11:53,220  INFO ThreadPoolTaskExecutor:165 - Initializing ExecutorService 
+13:11:53,384  INFO AnnotationConfigApplicationContext:982 - Closing org.springframework.context.annotation.AnnotationConfigApplicationContext@36aa7bc2: startup date [Sat Oct 15 13:11:52 CST 2016]; root of context hierarchy
+ThreadPoolTaskExecutor-4 异步任务+1=102
+ThreadPoolTaskExecutor-4 异步任务+1=103
+ThreadPoolTaskExecutor-4 异步任务=3
+ThreadPoolTaskExecutor-4 异步任务+1=104
+ThreadPoolTaskExecutor-4 异步任务=4
+ThreadPoolTaskExecutor-4 异步任务+1=105
+ThreadPoolTaskExecutor-4 异步任务=5
+ThreadPoolTaskExecutor-4 异步任务+1=106
+ThreadPoolTaskExecutor-4 异步任务=6
+ThreadPoolTaskExecutor-4 异步任务+1=107
+ThreadPoolTaskExecutor-4 异步任务=7
+ThreadPoolTaskExecutor-4 异步任务+1=108
+ThreadPoolTaskExecutor-4 异步任务=8
+ThreadPoolTaskExecutor-4 异步任务+1=109
+ThreadPoolTaskExecutor-4 异步任务=9
+ThreadPoolTaskExecutor-4 异步任务+1=110
+ThreadPoolTaskExecutor-5 异步任务=2
+ThreadPoolTaskExecutor-2 异步任务+1=101
+ThreadPoolTaskExecutor-3 异步任务=1
+ThreadPoolTaskExecutor-1 异步任务=0
